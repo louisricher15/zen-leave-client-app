@@ -1,0 +1,29 @@
+<ion-header *ngIf="isLogged">
+  <ion-toolbar>
+    <ion-icon
+      name="home-outline"
+      slot="start"
+      size="large"
+      [routerLink]="['/home']"
+    ></ion-icon>
+
+    <ion-item
+      slot="end"
+      color="none"
+      lines="none"
+      detail="false"
+      [routerLink]="['/my-profile']"
+    >
+      <ion-label slot="end"> Louis </ion-label>
+      <ion-icon name="person-outline" slot="end"></ion-icon>
+    </ion-item>
+
+    <ion-icon
+      name="log-out-outline"
+      slot="end"
+      size="large"
+      color="danger"
+      (click)="logout()"
+    ></ion-icon>
+  </ion-toolbar>
+</ion-header>
