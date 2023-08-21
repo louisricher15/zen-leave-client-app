@@ -17,6 +17,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
   },
+  {
+    path: 'leave-creation',
+    loadChildren: () => import('./leave-creation/leave-creation.module').then( m => m.LeaveCreationPageModule)
+  },
 ];
 
 @NgModule({
