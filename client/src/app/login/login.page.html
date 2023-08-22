@@ -1,13 +1,103 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content fullscreen="false">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5" class="ion-padding-horizontal">
+        <h1><strong>Zen Leave</strong></h1>
+      </ion-col>
+    </ion-row>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <h3 class="ion-padding-horizontal">Connexion</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <ion-card color="light">
+          <ion-card-content>
+            <form *ngIf="!showSecurityCodeForm" [formGroup]="loginForm">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
+                      <ion-input
+                        formControlName="email"
+                        type="email"
+                        label="Email"
+                        label-placement="floating"
+                        [errorText]="loginForm.get('email')?.hasError('required') ? 'Veuillez saisir votre email' : loginForm.get('email')?.hasError('email') ? 'Email invalide' : ''"
+                      ></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row class="ion-justify-content-end ion-margin-top">
+                  <ion-col size="12" size-md="auto">
+                    <ion-button
+                      expand="block"
+                      (click)="sendSecurityCode()"
+                      [disabled]="loginForm.invalid || sendingSecurityCode"
+                    >
+                      <ion-spinner
+                        *ngIf="sendingSecurityCode"
+                        slot="start"
+                        name="crescent"
+                        class="ion-margin-end"
+                      ></ion-spinner>
+                      Connexion
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </form>
+
+            <form *ngIf="showSecurityCodeForm" [formGroup]="securityCodeForm">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12" class="ion-padding-horizontal">
+                    Veuillez saisir le code de sécurité reçu sur
+                    <strong>{{ loginForm.get('email')?.value }}</strong>.
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col size="auto">
+                    <ion-item color="none" lines="none">
+                      <ion-input
+                        formControlName="code"
+                        type="text"
+                        label="Code de Sécurité"
+                        label-placement="floating"
+                        [errorText]="'Veuillez saisir le code sécurité'"
+                      ></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row class="ion-justify-content-end ion-margin-top">
+                  <ion-col size="12" size-md="auto">
+                    <ion-button
+                      expand="block"
+                      (click)="login()"
+                      [disabled]="securityCodeForm.invalid"
+                    >
+                      <ion-spinner
+                        *ngIf="loggingIn"
+                        slot="start"
+                        name="crescent"
+                        class="ion-margin-end"
+                      ></ion-spinner>
+
+                      Valider
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
