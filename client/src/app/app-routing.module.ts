@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/guards/auth.guard';
+import { UserTokenResolver } from './services/resolvers/user-token.resolver';
 
 const routes: Routes = [
   {
@@ -14,12 +16,23 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    canActivate: [AuthGuard],
+    resolve: {
+      userTokenDecoded: UserTokenResolver,
+    },
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: 'leave-creation',
-    loadChildren: () => import('./leave-creation/leave-creation.module').then( m => m.LeaveCreationPageModule)
+    canActivate: [AuthGuard],
+    resolve: {
+      userTokenDecoded: UserTokenResolver,
+    },
+    loadChildren: () =>
+      import('./leave-creation/leave-creation.module').then(
+        (m) => m.LeaveCreationPageModule,
+      ),
   },
 ];
 

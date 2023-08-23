@@ -16,10 +16,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
   get isLogged(): boolean {
-    return this.router.url !== '/login';
+    return localStorage.getItem('zl-user-token') !== null;
   }
 
   async logout(): Promise<void> {
+    localStorage.removeItem('zl-user-token');
     await this.router.navigate(['/login']);
   }
 }

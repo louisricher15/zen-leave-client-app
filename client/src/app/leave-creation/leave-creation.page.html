@@ -1,110 +1,108 @@
 <ion-content fullscreen="false">
-  <div>
-    <ion-grid>
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="12" size-md="5" class="ion-padding-horizontal">
-          <h1>Zen Leave</h1>
-        </ion-col>
-      </ion-row>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5" class="ion-padding-horizontal">
+        <h1><strong>Zen Leave</strong></h1>
+      </ion-col>
+    </ion-row>
 
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="12" size-md="5">
-          <h3 class="ion-padding-horizontal">Nouvelle absence</h3>
-        </ion-col>
-      </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <h3 class="ion-padding-horizontal">Nouvelle absence</h3>
+      </ion-col>
+    </ion-row>
 
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="12" size-md="5">
-          <ion-card color="light">
-            <form [formGroup]="leaveCreationForm">
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="12">
-                    <ion-datetime
-                      presentation="date"
-                      first-day-of-week="1"
-                      formControlName="startDate"
-                      [isDateEnabled]="isStartDateEnabled"
-                    >
-                      <span slot="title">Du</span></ion-datetime
-                    >
-                  </ion-col>
-
-                  <ion-col
-                    size="12"
-                    class="ion-padding-horizontal"
-                    *ngIf="leaveCreationForm.get('startDate')?.value"
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <ion-card color="light">
+          <form [formGroup]="leaveCreationForm">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-datetime
+                    presentation="date"
+                    first-day-of-week="1"
+                    formControlName="startDate"
+                    [isDateEnabled]="isStartDateEnabled"
                   >
-                    <ion-item color="none" lines="none">
-                      <ion-select
-                        cancel-text="Annuler"
-                        interface="action-sheet"
-                        placeholder="Toute la journée / Matin / Après-midi"
-                        formControlName="startDateDayPart"
-                      >
-                        <ion-select-option value="morning"
-                          >Matin</ion-select-option
-                        >
-                        <ion-select-option value="afternoon"
-                          >Après-midi</ion-select-option
-                        >
-                      </ion-select>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-
-                <ion-row
-                  *ngIf="leaveCreationForm.get('startDate')?.value && leaveCreationForm.get('startDateDayPart')?.value"
-                >
-                  <ion-col size="12">
-                    <ion-datetime
-                      presentation="date"
-                      first-day-of-week="1"
-                      formControlName="endDate"
-                      [isDateEnabled]="isStartDateEnabled"
-                    >
-                      <span slot="title">Au</span></ion-datetime
-                    >
-                  </ion-col>
-
-                  <ion-col
-                    size="12"
-                    class="ion-padding-horizontal"
-                    *ngIf="leaveCreationForm.get('endDate')?.value"
+                    <span slot="title">Du</span></ion-datetime
                   >
-                    <ion-item color="none" lines="none">
-                      <ion-select
-                        cancel-text="Annuler"
-                        interface="action-sheet"
-                        placeholder="Toute la journée / Matin / Après-midi"
-                        formControlName="endDateDayPart"
-                      >
-                        <ion-select-option value="morning"
-                          >Matin</ion-select-option
-                        >
-                        <ion-select-option value="afternoon"
-                          >Après-midi</ion-select-option
-                        >
-                      </ion-select>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
+                </ion-col>
 
-                <ion-row
-                  class="ion-justify-content-end ion-margin-top"
-                  *ngIf="leaveCreationForm.valid"
+                <ion-col
+                  size="12"
+                  class="ion-padding-horizontal"
+                  *ngIf="leaveCreationForm.get('startDate')?.value"
                 >
-                  <ion-col size="12" size-md="auto">
-                    <ion-button expand="block" (click)="createLeave()">
-                      Créer l'absence
-                    </ion-button>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </form>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+                  <ion-item color="none" lines="none">
+                    <ion-select
+                      cancel-text="Annuler"
+                      interface="action-sheet"
+                      placeholder="Toute la journée / Matin / Après-midi"
+                      formControlName="startDateDayPart"
+                    >
+                      <ion-select-option value="morning"
+                        >Matin</ion-select-option
+                      >
+                      <ion-select-option value="afternoon"
+                        >Après-midi</ion-select-option
+                      >
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                *ngIf="leaveCreationForm.get('startDate')?.value && leaveCreationForm.get('startDateDayPart')?.value"
+              >
+                <ion-col size="12">
+                  <ion-datetime
+                    presentation="date"
+                    first-day-of-week="1"
+                    formControlName="endDate"
+                    [isDateEnabled]="isStartDateEnabled"
+                  >
+                    <span slot="title">Au</span></ion-datetime
+                  >
+                </ion-col>
+
+                <ion-col
+                  size="12"
+                  class="ion-padding-horizontal"
+                  *ngIf="leaveCreationForm.get('endDate')?.value"
+                >
+                  <ion-item color="none" lines="none">
+                    <ion-select
+                      cancel-text="Annuler"
+                      interface="action-sheet"
+                      placeholder="Toute la journée / Matin / Après-midi"
+                      formControlName="endDateDayPart"
+                    >
+                      <ion-select-option value="morning"
+                        >Matin</ion-select-option
+                      >
+                      <ion-select-option value="afternoon"
+                        >Après-midi</ion-select-option
+                      >
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                class="ion-justify-content-end ion-margin-top"
+                *ngIf="leaveCreationForm.valid"
+              >
+                <ion-col size="12" size-md="auto">
+                  <ion-button expand="block" (click)="createLeave()">
+                    Créer l'absence
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -16,7 +16,7 @@ export class LeavesService {
     endDateDayPart: string;
   }): Observable<boolean> {
     return this.httpClient.post<boolean>(
-      `${environment.apiURL}leave-creation`,
+      `${environment.apiURL}create-leave`,
       payload,
     );
   }
