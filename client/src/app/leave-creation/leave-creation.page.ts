@@ -5,8 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Subject, take } from 'rxjs';
+import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { LeavesService } from '../services/leaves.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { User } from '../services/models/user.model';
 
 @Component({
   selector: 'app-leave-creation',
@@ -14,6 +17,7 @@ import { LeavesService } from '../services/leaves.service';
   styleUrls: ['./leave-creation.page.scss'],
 })
 export class LeaveCreationPage implements OnInit, OnDestroy {
+  currentUser: User | null = null;
   leaveCreationForm: FormGroup = new FormGroup({});
 
   private readonly ngUnsubscribe = new Subject();
@@ -21,6 +25,9 @@ export class LeaveCreationPage implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private leavesService: LeavesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -30,6 +37,28 @@ export class LeaveCreationPage implements OnInit, OnDestroy {
       endDate: new FormControl(null, Validators.required),
       endDateDayPart: new FormControl(null, Validators.required),
     });
+
+    this.activatedRoute.url
+      .pipe(
+        switchMap(() =>
+          this.authService.decodeUserToken(
+            localStorage.getItem('zl-user-token'),
+          ),
+        ),
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe({
+        next: (user) => {
+          if (user) {
+            this.currentUser = user;
+          }
+        },
+        error: async () => {
+          localStorage.removeItem('zl-user-token');
+
+          await this.router.navigate(['/login']);
+        },
+      });
   }
 
   ngOnDestroy() {

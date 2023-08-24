@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LeaveCreationPageRoutingModule } from './leave-creation-routing.module';
 
 import { LeaveCreationPage } from './leave-creation.page';
+import { HeaderComponent } from '../components/header/header.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { LeaveCreationPage } from './leave-creation.page';
     IonicModule,
     LeaveCreationPageRoutingModule,
     ReactiveFormsModule,
+    HeaderComponent,
   ],
   declarations: [LeaveCreationPage],
 })

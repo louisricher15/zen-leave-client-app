@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from './login-routing.module';
+import { MyProfilePageRoutingModule } from './my-profile-routing.module';
 
-import { LoginPage } from './login.page';
+import { MyProfilePage } from './my-profile.page';
 import { HeaderComponent } from '../components/header/header.component';
 
 @NgModule({
@@ -14,10 +14,10 @@ import { HeaderComponent } from '../components/header/header.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule,
+    MyProfilePageRoutingModule,
     ReactiveFormsModule,
     HeaderComponent,
   ],
-  declarations: [LoginPage],
+  declarations: [MyProfilePage],
 })
-export class LoginPageModule {}
+export class MyProfilePageModule {}

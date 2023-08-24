@@ -1,0 +1,91 @@
+<app-header [currentUser]="currentUser"></app-header>
+
+<ion-content fullscreen="false">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5" class="ion-padding-horizontal">
+        <h1>
+          <strong>Mon Profil</strong>
+        </h1>
+        <ion-chip [color]="roleBadgeColor">{{ roleLabel }}</ion-chip>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <ion-card color="light">
+          <ion-card-content>
+            <form class="ion-padding-bottom" [formGroup]="profileForm">
+              <ion-grid class="ion-margin-bottom">
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
+                      <ion-input
+                        type="text"
+                        label="Email"
+                        label-placement="floating"
+                        [readonly]="true"
+                        [disabled]="true"
+                        [value]="currentUser?.email"
+                      >
+                      </ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
+                      <ion-input
+                        type="text"
+                        label="Prénom"
+                        label-placement="floating"
+                        formControlName="firstName"
+                      >
+                      </ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
+                      <ion-input
+                        type="text"
+                        label="Nom"
+                        label-placement="floating"
+                        formControlName="lastName"
+                      >
+                      </ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
+                      <ion-checkbox
+                        [value]="true"
+                        slot="start"
+                        formControlName="internal"
+                      ></ion-checkbox>
+                      <ion-label>Interne</ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+              <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+                <ion-fab-button
+                  [disabled]="!profileForm.dirty"
+                  (click)="save()"
+                >
+                  <ion-icon name="save-outline"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
