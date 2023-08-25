@@ -10,18 +10,40 @@
 
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="5">
+        <ion-row>
+          <ion-col size="auto">
+            <ion-button color="none" [routerLink]="['/my-leaves']" size="small">
+              <ion-icon name="arrow-back-outline" slot="start"></ion-icon>Mes
+              absences
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
         <ion-card color="light">
           <ion-card-content>
             <ion-grid>
-              <ion-row>
-                <ion-col size="12" [innerHTML]="leaveDateFormatted?.start">
+              <ion-row class="ion-margin-bottom">
+                <ion-col size="auto">
+                  <ion-chip [color]="validationStatusChipColor">
+                    <ion-icon [name]="validationStatusIcon"></ion-icon>
+                    <ion-label [innerText]="validationStatusLabel"></ion-label>
+                  </ion-chip>
                 </ion-col>
               </ion-row>
 
-              <ion-row *ngIf="leaveDateFormatted?.end !== null">
+              <ion-row>
+                <ion-col size="12" [innerHTML]="leaveDateFormatted.start">
+                </ion-col>
+              </ion-row>
+
+              <ion-row *ngIf="leaveDateFormatted.end !== null">
                 <ion-col
                   size="12"
-                  [innerHTML]="leaveDateFormatted?.end"
+                  [innerHTML]="leaveDateFormatted.end"
                 ></ion-col>
               </ion-row>
 
@@ -36,7 +58,12 @@
                   </ion-button>
                 </ion-col>
 
-                <ion-col size="12" size-xl="" (click)="submitForValidation()">
+                <ion-col
+                  size="12"
+                  size-xl=""
+                  (click)="submitForValidation()"
+                  *ngIf="mustBeSubmittedForValidation"
+                >
                   <ion-button expand="block">
                     Soumettre pour validation
                   </ion-button>

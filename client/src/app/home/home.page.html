@@ -22,12 +22,25 @@
           </ion-col>
 
           <ion-col size="12">
-            <ion-button size="large" expand="block">
+            <ion-button
+              size="large"
+              expand="block"
+              [routerLink]="['/my-leaves']"
+            >
               Voir mes absences
             </ion-button>
           </ion-col>
 
-          <ion-col size="12">
+          <ion-col size="12" *ngIf="currentUser?.role !== 'USER'">
+            <ion-button size="large" expand="block" color="tertiary">
+              Voir les absences de mon équipe
+            </ion-button>
+          </ion-col>
+
+          <ion-col
+            size="12"
+            *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'SUPER_ADMIN'"
+          >
             <ion-button size="large" expand="block" color="tertiary">
               Voir toutes les absences
             </ion-button>
