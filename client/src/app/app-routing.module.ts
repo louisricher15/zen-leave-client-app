@@ -35,6 +35,12 @@ const routes: Routes = [
         (m) => m.MyProfilePageModule,
       ),
   },
+  {
+    path: 'leave/:leaveID',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./leave/leave.module').then((m) => m.LeavePageModule),
+  },
 ];
 
 @NgModule({

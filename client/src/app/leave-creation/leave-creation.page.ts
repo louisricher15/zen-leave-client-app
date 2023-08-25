@@ -10,6 +10,7 @@ import { LeavesService } from '../services/leaves.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../services/models/user.model';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-leave-creation',
@@ -18,6 +19,7 @@ import { User } from '../services/models/user.model';
 })
 export class LeaveCreationPage implements OnInit, OnDestroy {
   currentUser: User | null = null;
+  creating = false;
   leaveCreationForm: FormGroup = new FormGroup({});
 
   private readonly ngUnsubscribe = new Subject();
@@ -28,6 +30,7 @@ export class LeaveCreationPage implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit() {
@@ -68,15 +71,50 @@ export class LeaveCreationPage implements OnInit, OnDestroy {
 
   createLeave(): void {
     if (this.leaveCreationForm.valid) {
+      this.creating = true;
+
       this.leavesService
-        .createLeave(this.leaveCreationForm.getRawValue())
+        .createLeave({
+          email: this.currentUser?.email,
+          ...this.leaveCreationForm.getRawValue(),
+        })
         .pipe(take(1))
         .subscribe({
-          next: (isLeaveCreationOK) => {
-            // TODO: alert + redirect
+          next: async (newLeaveID) => {
+            if (newLeaveID) {
+              this.creating = false;
+
+              if (await this.toastController.getTop()) {
+                await this.toastController.dismiss();
+              }
+
+              const toast = await this.toastController.create({
+                message: `Absence créée`,
+                duration: 3000,
+                position: 'bottom',
+                color: 'success',
+              });
+
+              await toast.present();
+
+              await this.router.navigate(['/leave', newLeaveID]);
+            }
           },
           error: async () => {
-            // TODO alert
+            this.creating = false;
+
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
+
+            const toast = await this.toastController.create({
+              message: `Une erreur est survenue lors de la création de votre absence`,
+              duration: 3000,
+              position: 'bottom',
+              color: 'danger',
+            });
+
+            await toast.present();
           },
         });
     }

@@ -83,6 +83,10 @@ export class LoginPage implements OnInit, OnDestroy {
             this.sendingSecurityCode = true;
 
             if (this.showSecurityCodeForm) {
+              if (await this.toastController.getTop()) {
+                await this.toastController.dismiss();
+              }
+
               const toast = await this.toastController.create({
                 message: `Vous allez recevoir un code de sécurité sur l'adresse '${this.loginForm.get(
                   'email',
@@ -97,6 +101,10 @@ export class LoginPage implements OnInit, OnDestroy {
           },
           error: async () => {
             this.sendingSecurityCode = true;
+
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
 
             const toast = await this.toastController.create({
               message: `Une erreur est survenue lors de l'envoi du code de sécurité`,
@@ -126,6 +134,10 @@ export class LoginPage implements OnInit, OnDestroy {
             if (token) {
               this.loggingIn = false;
 
+              if (await this.toastController.getTop()) {
+                await this.toastController.dismiss();
+              }
+
               const toast = await this.toastController.create({
                 message: `Connexion réussie`,
                 duration: 3000,
@@ -142,6 +154,10 @@ export class LoginPage implements OnInit, OnDestroy {
           },
           error: async () => {
             this.loggingIn = false;
+
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
 
             const toast = await this.toastController.create({
               message: `Une erreur est survenue lors de la connexion`,
