@@ -17,9 +17,11 @@
                 <ion-row>
                   <ion-col size="12">
                     <ion-datetime
+                      *ngIf="isStartDateEnabled"
                       presentation="date"
                       first-day-of-week="1"
                       formControlName="startDate"
+                      [multiple]="false"
                       [isDateEnabled]="isStartDateEnabled"
                       [disabled]="creating"
                     >
@@ -40,12 +42,17 @@
                         formControlName="startDateDayPart"
                         [disabled]="creating"
                       >
-                        <ion-select-option value="morning"
+                        <ion-select-option
+                          *ngFor="let dayPart of startDayParts"
+                          [value]="dayPart?.value"
+                          >{{ dayPart?.label }}</ion-select-option
+                        >
+                        <!--<ion-select-option value="morning"
                           >Du matin</ion-select-option
                         >
                         <ion-select-option value="afternoon"
                           >De l'après-midi</ion-select-option
-                        >
+                        >-->
                       </ion-select>
                     </ion-item>
                   </ion-col>
@@ -59,6 +66,8 @@
                       presentation="date"
                       first-day-of-week="1"
                       formControlName="endDate"
+                      [min]="leaveCreationForm.get('startDate')?.value"
+                      [multiple]="false"
                       [isDateEnabled]="isStartDateEnabled"
                       [disabled]="creating"
                     >
@@ -80,12 +89,9 @@
                         [disabled]="creating"
                       >
                         <ion-select-option
-                          value="morning"
-                          *ngIf="leaveCreationForm.get('startDate')?.value !== leaveCreationForm.get('endDate')?.value || (leaveCreationForm.get('startDate')?.value === leaveCreationForm.get('endDate')?.value && leaveCreationForm.get('startDateDayPart')?.value !== 'afternoon')"
-                          >Au matin</ion-select-option
-                        >
-                        <ion-select-option value="afternoon"
-                          >À l'après-midi</ion-select-option
+                          *ngFor="let dayPart of endDayParts"
+                          [value]="dayPart?.value"
+                          >{{ dayPart?.label }}</ion-select-option
                         >
                       </ion-select>
                     </ion-item>

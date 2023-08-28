@@ -41,6 +41,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./leave/leave.module').then((m) => m.LeavePageModule),
   },
+  {
+    path: 'my-leaves',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./my-leaves/my-leaves.module').then((m) => m.MyLeavesPageModule),
+  },
 ];
 
 @NgModule({

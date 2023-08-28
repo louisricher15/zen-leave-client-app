@@ -46,6 +46,18 @@ export class LeavePage implements OnInit, OnDestroy {
         error: async () => {
           localStorage.removeItem('zl-user-token');
 
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Votre session a expiré`,
+            duration: 3000,
+            position: 'bottom',
+          });
+
+          await toast.present();
+
           await this.router.navigate(['/login']);
         },
       });
@@ -74,12 +86,23 @@ export class LeavePage implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  get mustBeSubmittedForValidation(): boolean {
+    return this.currentLeave?.validated === null;
+  }
+
   get leaveDateFormatted(): { start: string; end: string | null } {
     let start = '';
     let end = null;
 
     if (this.currentLeave) {
-      if (this.currentLeave?.startDate === this.currentLeave?.endDate) {
+      if (
+        new Date(new Date(this.currentLeave?.startDate).setHours(4))
+          .setMinutes(20)
+          .valueOf() ===
+        new Date(new Date(this.currentLeave?.endDate).setHours(4))
+          .setMinutes(20)
+          .valueOf()
+      ) {
         if (
           this.currentLeave?.startDateDayPart ===
           this.currentLeave?.endDateDayPart
@@ -98,7 +121,7 @@ export class LeavePage implements OnInit, OnDestroy {
             <string>this.currentLeave?.startDate,
             'dd/MM/YYYY',
             'en',
-          )}</h1><h2>Toute la journée</h2>`;
+          )}</h1><h2>toute la journée</h2>`;
         }
       } else {
         start = `<h1>Du ${formatDate(
@@ -126,6 +149,48 @@ export class LeavePage implements OnInit, OnDestroy {
     return { start, end };
   }
 
+  get validationStatusChipColor(): string {
+    if (this.currentLeave) {
+      if (this.currentLeave?.validated === null) {
+        return 'danger';
+      } else if (this.currentLeave?.validated === false) {
+        return 'warning';
+      } else {
+        return 'success';
+      }
+    } else {
+      return '';
+    }
+  }
+
+  get validationStatusLabel(): string {
+    if (this.currentLeave) {
+      if (this.currentLeave?.validated === null) {
+        return `À soumetre pour validation`;
+      } else if (this.currentLeave?.validated === false) {
+        return `En attente de validation`;
+      } else {
+        return `Validée`;
+      }
+    } else {
+      return '';
+    }
+  }
+
+  get validationStatusIcon(): string {
+    if (this.currentLeave) {
+      if (this.currentLeave?.validated === null) {
+        return `ellipse-outline`;
+      } else if (this.currentLeave?.validated === false) {
+        return `hourglass-outline`;
+      } else {
+        return `checkmark-outline`;
+      }
+    } else {
+      return '';
+    }
+  }
+
   deleteLeave(): void {
     this.leavesService
       .deleteLeave(<string>this.currentLeave?.id)
@@ -146,7 +211,7 @@ export class LeavePage implements OnInit, OnDestroy {
 
             await toast.present();
 
-            await this.router.navigate(['/home']);
+            await this.router.navigate(['/my-leaves']);
           }
         },
         error: async () => {

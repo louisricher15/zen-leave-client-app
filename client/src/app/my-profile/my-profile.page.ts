@@ -4,6 +4,7 @@ import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-my-profile',
@@ -19,14 +20,13 @@ export class MyProfilePage implements OnInit, OnDestroy {
     internal: new FormControl(null),
   });
 
-  isSaveButtonDisabled = true;
-
   private readonly ngUnsubscribe = new Subject();
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit() {
@@ -55,6 +55,18 @@ export class MyProfilePage implements OnInit, OnDestroy {
         error: async () => {
           localStorage.removeItem('zl-user-token');
 
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Votre session a expiré`,
+            duration: 3000,
+            position: 'bottom',
+          });
+
+          await toast.present();
+
           await this.router.navigate(['/login']);
         },
       });
@@ -76,7 +88,7 @@ export class MyProfilePage implements OnInit, OnDestroy {
     );
   }
 
-  get roleBadgeColor(): string | null {
+  get roleChipColor(): string | null {
     return (
       {
         SUPER_ADMIN: 'success',
@@ -92,7 +104,7 @@ export class MyProfilePage implements OnInit, OnDestroy {
       .updateUserProfile(this.profileForm.getRawValue())
       .pipe(take(1))
       .subscribe({
-        next: (result) => {
+        next: async (result) => {
           if (result) {
             localStorage.setItem('zl-user-token', result?.token);
             this.currentUser = result?.user;
@@ -103,10 +115,35 @@ export class MyProfilePage implements OnInit, OnDestroy {
               lastName: this.currentUser?.lastName,
               internal: this.currentUser?.internal,
             });
+
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
+
+            const toast = await this.toastController.create({
+              message: `Profil mis à jour`,
+              duration: 3000,
+              position: 'bottom',
+              color: 'success',
+            });
+
+            await toast.present();
           }
         },
         error: async () => {
           localStorage.removeItem('zl-user-token');
+
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Votre session a expiré`,
+            duration: 3000,
+            position: 'bottom',
+          });
+
+          await toast.present();
 
           await this.router.navigate(['/login']);
         },

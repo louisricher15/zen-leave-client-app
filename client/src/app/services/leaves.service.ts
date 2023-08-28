@@ -34,4 +34,10 @@ export class LeavesService {
       `${environment.apiURL}leave-by-id/${leaveID}`,
     );
   }
+
+  myLeaves(userID: string): Observable<Leave[]> {
+    return this.httpClient.get<Leave[]>(
+      `${environment.apiURL}my-leaves/${userID}`,
+    );
+  }
 }

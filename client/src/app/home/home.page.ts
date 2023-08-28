@@ -3,6 +3,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../services/models/user.model';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomePage implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit() {
@@ -38,6 +40,18 @@ export class HomePage implements OnInit, OnDestroy {
         },
         error: async () => {
           localStorage.removeItem('zl-user-token');
+
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Votre session a expiré`,
+            duration: 3000,
+            position: 'bottom',
+          });
+
+          await toast.present();
 
           await this.router.navigate(['/login']);
         },
