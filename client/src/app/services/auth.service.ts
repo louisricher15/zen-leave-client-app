@@ -37,6 +37,7 @@ export class AuthService {
     lastName: string;
     firstName: string;
     internal: boolean;
+    team: string;
   }): Observable<{ user: User; token: string }> {
     return this.httpClient.put<{ user: User; token: string }>(
       `${environment.apiURL}update-user-profile`,

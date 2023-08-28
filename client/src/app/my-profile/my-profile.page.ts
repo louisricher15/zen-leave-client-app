@@ -18,6 +18,7 @@ export class MyProfilePage implements OnInit, OnDestroy {
     firstName: new FormControl(null),
     lastName: new FormControl(null),
     internal: new FormControl(null),
+    team: new FormControl(null),
   });
 
   private readonly ngUnsubscribe = new Subject();
@@ -49,6 +50,7 @@ export class MyProfilePage implements OnInit, OnDestroy {
               firstName: this.currentUser?.firstName,
               lastName: this.currentUser?.lastName,
               internal: this.currentUser?.internal,
+              team: this.currentUser?.team,
             });
           }
         },
@@ -114,6 +116,7 @@ export class MyProfilePage implements OnInit, OnDestroy {
               firstName: this.currentUser?.firstName,
               lastName: this.currentUser?.lastName,
               internal: this.currentUser?.internal,
+              team: this.currentUser?.team,
             });
 
             if (await this.toastController.getTop()) {
