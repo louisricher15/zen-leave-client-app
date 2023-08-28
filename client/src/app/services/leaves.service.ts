@@ -40,4 +40,11 @@ export class LeavesService {
       `${environment.apiURL}my-leaves/${userID}`,
     );
   }
+
+  submitLeave(leaveID: string): Observable<boolean> {
+    return this.httpClient.put<boolean>(
+      `${environment.apiURL}submit-leave/${leaveID}`,
+      {},
+    );
+  }
 }
