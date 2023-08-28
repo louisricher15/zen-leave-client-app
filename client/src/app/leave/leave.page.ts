@@ -231,5 +231,43 @@ export class LeavePage implements OnInit, OnDestroy {
       });
   }
 
-  submitForValidation(): void {}
+  submitForValidation(): void {
+    this.leavesService
+      .submitLeave(<string>this.currentLeave?.id)
+      .pipe(take(1))
+      .subscribe({
+        next: async (leaveSubmitIsOK) => {
+          if (leaveSubmitIsOK) {
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
+
+            const toast = await this.toastController.create({
+              message: `Absence soumise pour validation`,
+              duration: 3000,
+              position: 'bottom',
+              color: 'success',
+            });
+
+            await toast.present();
+
+            await this.router.navigate(['/my-leaves']);
+          }
+        },
+        error: async () => {
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Une erreur est survenue lors de la soumission de votre absence`,
+            duration: 3000,
+            position: 'bottom',
+            color: 'danger',
+          });
+
+          await toast.present();
+        },
+      });
+  }
 }
