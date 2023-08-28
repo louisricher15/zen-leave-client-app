@@ -63,6 +63,26 @@
                 <ion-row>
                   <ion-col size="12">
                     <ion-item color="none" lines="none">
+                      <ion-select
+                        cancel-text="Annuler"
+                        interface="action-sheet"
+                        placeholder="Équipe"
+                        formControlName="team"
+                      >
+                        <ion-select-option value="psc">
+                          Parcours Service Client
+                        </ion-select-option>
+                        <ion-select-option value="eco">
+                          Eco-conception
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item color="none" lines="none">
                       <ion-checkbox
                         [value]="true"
                         slot="start"
