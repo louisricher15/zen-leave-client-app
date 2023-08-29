@@ -140,32 +140,38 @@ export class MyLeavesPage implements OnInit, OnDestroy {
   }
 
   validationStatusChipColor(leave: Leave): string {
-    if (leave?.validated === null) {
+    if (leave?.validationStatus === 'rejected') {
       return 'danger';
-    } else if (leave?.validated === false) {
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
       return 'warning';
-    } else {
+    } else if (leave?.validationStatus === 'validated') {
       return 'success';
+    } else {
+      return 'medium';
     }
   }
 
   validationStatusLabel(leave: Leave): string {
-    if (leave?.validated === null) {
-      return `À soumetre pour validation`;
-    } else if (leave?.validated === false) {
+    if (leave?.validationStatus === 'rejected') {
+      return `Rejetée`;
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
       return `En attente de validation`;
-    } else {
+    } else if (leave?.validationStatus === 'validated') {
       return `Validée`;
+    } else {
+      return `À soumettre pour validation`;
     }
   }
 
   validationStatusIcon(leave: Leave): string {
-    if (leave?.validated === null) {
-      return `ellipse-outline`;
-    } else if (leave?.validated === false) {
+    if (leave?.validationStatus === 'rejected') {
+      return `close-outline`;
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
       return `hourglass-outline`;
-    } else {
+    } else if (leave?.validationStatus === 'validated') {
       return `checkmark-outline`;
+    } else {
+      return `ellipse-outline`;
     }
   }
 }

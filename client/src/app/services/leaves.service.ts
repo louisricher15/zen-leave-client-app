@@ -54,9 +54,23 @@ export class LeavesService {
     );
   }
 
+  rejectLeave(leaveID: string | undefined): Observable<boolean> {
+    return this.httpClient.put<boolean>(
+      `${environment.apiURL}reject-leave/${leaveID}`,
+      {},
+    );
+  }
+
   submitLeave(leaveID: string): Observable<boolean> {
     return this.httpClient.put<boolean>(
       `${environment.apiURL}submit-leave/${leaveID}`,
+      {},
+    );
+  }
+
+  validateLeave(leaveID: string | undefined): Observable<boolean> {
+    return this.httpClient.put<boolean>(
+      `${environment.apiURL}validate-leave/${leaveID}`,
       {},
     );
   }

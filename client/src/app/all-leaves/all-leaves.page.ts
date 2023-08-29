@@ -149,34 +149,46 @@ export class AllLeavesPage implements OnInit, OnDestroy {
     }
   }
 
-  validationStatusChipColor(leave: Leave): string {
-    if (leave?.validated === null) {
-      return 'danger';
-    } else if (leave?.validated === false) {
-      return 'warning';
-    } else {
-      return 'success';
-    }
-  }
+  rejectLeave(leaveID: string | undefined): void {
+    this.leavesService
+      .rejectLeave(leaveID)
+      .pipe(take(1))
+      .subscribe({
+        next: async (leaveRejectionIsOK) => {
+          if (leaveRejectionIsOK) {
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
 
-  validationStatusLabel(leave: Leave): string {
-    if (leave?.validated === null) {
-      return `À soumetre pour validation`;
-    } else if (leave?.validated === false) {
-      return `En attente de validation`;
-    } else {
-      return `Validée`;
-    }
-  }
+            const toast = await this.toastController.create({
+              message: `Absence rejetée`,
+              duration: 3000,
+              position: 'bottom',
+              color: 'success',
+            });
 
-  validationStatusIcon(leave: Leave): string {
-    if (leave?.validated === null) {
-      return `ellipse-outline`;
-    } else if (leave?.validated === false) {
-      return `hourglass-outline`;
-    } else {
-      return `checkmark-outline`;
-    }
+            await toast.present();
+
+            (<Leave>(
+              this.allLeaves.find((leave) => leave?.id === leaveID)
+            )).validationStatus = 'rejected';
+          }
+        },
+        error: async () => {
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Une erreur est survenue lors du rejet de l'absence`,
+            duration: 3000,
+            position: 'bottom',
+            color: 'danger',
+          });
+
+          await toast.present();
+        },
+      });
   }
 
   userNameByID(userID: string | undefined): string | null {
@@ -202,6 +214,84 @@ export class AllLeavesPage implements OnInit, OnDestroy {
       return teamUser?.email || '';
     } else {
       return '';
+    }
+  }
+
+  validateLeave(leaveID: string | undefined): void {
+    this.leavesService
+      .validateLeave(leaveID)
+      .pipe(take(1))
+      .subscribe({
+        next: async (leaveValidationIsOK) => {
+          if (leaveValidationIsOK) {
+            if (await this.toastController.getTop()) {
+              await this.toastController.dismiss();
+            }
+
+            const toast = await this.toastController.create({
+              message: `Absence validée`,
+              duration: 3000,
+              position: 'bottom',
+              color: 'success',
+            });
+
+            await toast.present();
+
+            (<Leave>(
+              this.allLeaves.find((leave) => leave?.id === leaveID)
+            )).validationStatus = 'validated';
+          }
+        },
+        error: async () => {
+          if (await this.toastController.getTop()) {
+            await this.toastController.dismiss();
+          }
+
+          const toast = await this.toastController.create({
+            message: `Une erreur est survenue lors de la validation de l'absence`,
+            duration: 3000,
+            position: 'bottom',
+            color: 'danger',
+          });
+
+          await toast.present();
+        },
+      });
+  }
+
+  validationStatusChipColor(leave: Leave): string {
+    if (leave?.validationStatus === 'rejected') {
+      return 'danger';
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
+      return 'warning';
+    } else if (leave?.validationStatus === 'validated') {
+      return 'success';
+    } else {
+      return 'medium';
+    }
+  }
+
+  validationStatusLabel(leave: Leave): string {
+    if (leave?.validationStatus === 'rejected') {
+      return `Rejetée`;
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
+      return `En attente de validation`;
+    } else if (leave?.validationStatus === 'validated') {
+      return `Validée`;
+    } else {
+      return `À soumettre pour validation`;
+    }
+  }
+
+  validationStatusIcon(leave: Leave): string {
+    if (leave?.validationStatus === 'rejected') {
+      return `close-outline`;
+    } else if (leave?.validationStatus === 'submitted-for-validation') {
+      return `hourglass-outline`;
+    } else if (leave?.validationStatus === 'validated') {
+      return `checkmark-outline`;
+    } else {
+      return `ellipse-outline`;
     }
   }
 }
