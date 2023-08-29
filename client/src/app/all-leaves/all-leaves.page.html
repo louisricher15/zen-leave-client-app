@@ -1,0 +1,61 @@
+<app-header [currentUser]="currentUser"></app-header>
+
+<ion-content fullscreen="false">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5" class="ion-padding-horizontal">
+        <h1>
+          <strong>Toutes les absences</strong>
+        </h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="5">
+        <ion-note class="ion-margin-horizontal" *ngIf="allLeaves?.length === 0">
+          Pas d'absences
+        </ion-note>
+
+        <ion-card color="light" *ngFor="let leave of allLeaves">
+          <ion-card-content class="ion-padding">
+            <ion-grid class="ion-no-margin ion-no-padding">
+              <ion-row>
+                <ion-col size="auto">
+                  <ion-chip [color]="validationStatusChipColor(leave)">
+                    <ion-icon [name]="validationStatusIcon(leave)"></ion-icon>
+                    <ion-label
+                      [innerText]="validationStatusLabel(leave)"
+                    ></ion-label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-margin-vertical">
+                <ion-col size="12" [innerHTML]="userNameByID(leave?.userID)">
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col
+                  size="12"
+                  [innerHTML]="leaveDateFormatted(leave).start"
+                >
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                *ngIf="leaveDateFormatted(leave).end !== null"
+                class="ion-margin-top"
+              >
+                <ion-col
+                  size="12"
+                  [innerHTML]="leaveDateFormatted(leave).end"
+                ></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
