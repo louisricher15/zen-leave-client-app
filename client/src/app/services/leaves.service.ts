@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Leave } from './models/leave.model';
+import { User } from './models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,12 @@ export class LeavesService {
   myLeaves(userID: string): Observable<Leave[]> {
     return this.httpClient.get<Leave[]>(
       `${environment.apiURL}my-leaves/${userID}`,
+    );
+  }
+
+  myTeamLeaves(team: string): Observable<{ users: User[]; leaves: Leave[] }> {
+    return this.httpClient.get<{ users: User[]; leaves: Leave[] }>(
+      `${environment.apiURL}my-team-leaves/${team}`,
     );
   }
 

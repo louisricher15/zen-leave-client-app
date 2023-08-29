@@ -47,6 +47,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./my-leaves/my-leaves.module').then((m) => m.MyLeavesPageModule),
   },
+  {
+    path: 'my-team-leaves',
+    loadChildren: () => import('./my-team-leaves/my-team-leaves.module').then( m => m.MyTeamLeavesPageModule)
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,7 @@
+:host {
+  ion-button::part(native) {
+    display: flex;
+    height: 100%;
+    white-space: pre-wrap;
+  }
+}

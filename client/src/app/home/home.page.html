@@ -32,18 +32,36 @@
           </ion-col>
 
           <ion-col size="12" *ngIf="currentUser?.role !== 'USER'">
-            <ion-button size="large" expand="block" color="tertiary">
+            <ion-button
+              size="large"
+              expand="block"
+              color="tertiary"
+              [disabled]="currentUser?.team === null"
+              [routerLink]="['/my-team-leaves']"
+            >
               Voir les absences de mon équipe
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12" *ngIf="currentUser?.role === 'SUPER_ADMIN'">
+            <ion-button
+              size="large"
+              expand="block"
+              color="tertiary"
+              [disabled]="currentUser?.team === null"
+            >
+              Voir toutes les absences
             </ion-button>
           </ion-col>
 
           <ion-col
             size="12"
-            *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'SUPER_ADMIN'"
+            class="ion-text-center"
+            *ngIf="currentUser?.team === null"
           >
-            <ion-button size="large" expand="block" color="tertiary">
-              Voir toutes les absences
-            </ion-button>
+            <ion-note color="warning">
+              Pensez a renseigner votre équipe sur votre profil
+            </ion-note>
           </ion-col>
         </ion-row>
       </ion-col>
