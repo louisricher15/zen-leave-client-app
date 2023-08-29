@@ -87,7 +87,7 @@ export class LeavePage implements OnInit, OnDestroy {
   }
 
   get mustBeSubmittedForValidation(): boolean {
-    return this.currentLeave?.validated === null;
+    return this.currentLeave?.validationStatus === null;
   }
 
   get leaveDateFormatted(): { start: string; end: string | null } {
@@ -150,44 +150,44 @@ export class LeavePage implements OnInit, OnDestroy {
   }
 
   get validationStatusChipColor(): string {
-    if (this.currentLeave) {
-      if (this.currentLeave?.validated === null) {
-        return 'danger';
-      } else if (this.currentLeave?.validated === false) {
-        return 'warning';
-      } else {
-        return 'success';
-      }
+    if (this.currentLeave?.validationStatus === 'rejected') {
+      return 'danger';
+    } else if (
+      this.currentLeave?.validationStatus === 'submitted-for-validation'
+    ) {
+      return 'warning';
+    } else if (this.currentLeave?.validationStatus === 'validated') {
+      return 'success';
     } else {
-      return '';
+      return 'medium';
     }
   }
 
   get validationStatusLabel(): string {
-    if (this.currentLeave) {
-      if (this.currentLeave?.validated === null) {
-        return `À soumetre pour validation`;
-      } else if (this.currentLeave?.validated === false) {
-        return `En attente de validation`;
-      } else {
-        return `Validée`;
-      }
+    if (this.currentLeave?.validationStatus === 'rejected') {
+      return `Rejetée`;
+    } else if (
+      this.currentLeave?.validationStatus === 'submitted-for-validation'
+    ) {
+      return `En attente de validation`;
+    } else if (this.currentLeave?.validationStatus === 'validated') {
+      return `Validée`;
     } else {
-      return '';
+      return `À soumettre pour validation`;
     }
   }
 
   get validationStatusIcon(): string {
-    if (this.currentLeave) {
-      if (this.currentLeave?.validated === null) {
-        return `ellipse-outline`;
-      } else if (this.currentLeave?.validated === false) {
-        return `hourglass-outline`;
-      } else {
-        return `checkmark-outline`;
-      }
+    if (this.currentLeave?.validationStatus === 'rejected') {
+      return `close-outline`;
+    } else if (
+      this.currentLeave?.validationStatus === 'submitted-for-validation'
+    ) {
+      return `hourglass-outline`;
+    } else if (this.currentLeave?.validationStatus === 'validated') {
+      return `checkmark-outline`;
     } else {
-      return '';
+      return `ellipse-outline`;
     }
   }
 

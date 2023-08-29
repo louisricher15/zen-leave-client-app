@@ -5,5 +5,5 @@ export interface Leave {
   endDate: string;
   endDateDayPart: string;
   userID: string;
-  validated: boolean;
+  validationStatus: string;
 }
