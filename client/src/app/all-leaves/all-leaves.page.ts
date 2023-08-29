@@ -1,22 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../services/models/user.model';
+import { Leave } from '../services/models/leave.model';
 import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { LeavesService } from '../services/leaves.service';
 import { ToastController } from '@ionic/angular';
-import { Leave } from '../services/models/leave.model';
 import { formatDate } from '@angular/common';
 
 @Component({
-  selector: 'app-my-team-leaves',
-  templateUrl: './my-team-leaves.page.html',
-  styleUrls: ['./my-team-leaves.page.scss'],
+  selector: 'app-all-leaves',
+  templateUrl: './all-leaves.page.html',
+  styleUrls: ['./all-leaves.page.scss'],
 })
-export class MyTeamLeavesPage implements OnInit, OnDestroy {
+export class AllLeavesPage implements OnInit, OnDestroy {
   currentUser: User | null = null;
-  myTeamLeaves: Leave[] = [];
-  myTeamUsers: User[] = [];
+  allLeaves: Leave[] = [];
+  allUsers: User[] = [];
 
   private readonly ngUnsubscribe = new Subject();
 
@@ -43,7 +43,7 @@ export class MyTeamLeavesPage implements OnInit, OnDestroy {
           if (user) {
             this.currentUser = user;
 
-            this.loadMyTeamLeaves();
+            this.loadAllLeaves();
           }
         },
         error: async () => {
@@ -121,21 +121,20 @@ export class MyTeamLeavesPage implements OnInit, OnDestroy {
     return { start, end };
   }
 
-  loadMyTeamLeaves(): void {
+  loadAllLeaves(): void {
     if (this.currentUser) {
       this.leavesService
-        .myTeamLeaves(this.currentUser?.team)
+        .allLeaves()
         .pipe(take(1))
         .subscribe({
-          next: (myTeamLeaves) => {
-            if (myTeamLeaves) {
-              this.myTeamUsers = myTeamLeaves?.users;
-              this.myTeamLeaves = myTeamLeaves?.leaves
+          next: (allLeaves) => {
+            if (allLeaves) {
+              this.allUsers = allLeaves?.users;
+              this.allLeaves = allLeaves?.leaves
                 ?.filter((leave) =>
                   this.currentUser?.role === 'STAFF'
-                    ? this.myTeamUsers.find(
-                        (user) => user?.id === leave?.userID,
-                      )?.role === 'USER' &&
+                    ? this.allUsers.find((user) => user?.id === leave?.userID)
+                        ?.role === 'USER' &&
                       leave?.userID !== this.currentUser?.id
                     : leave?.userID !== this.currentUser?.id,
                 )
@@ -181,7 +180,7 @@ export class MyTeamLeavesPage implements OnInit, OnDestroy {
   }
 
   userNameByID(userID: string | undefined): string | null {
-    const teamUser = this.myTeamUsers.find((user) => user?.id === userID);
+    const teamUser = this.allUsers.find((user) => user?.id === userID);
 
     if (
       (<string>teamUser?.firstName)?.length > 0 ||

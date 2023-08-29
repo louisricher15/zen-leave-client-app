@@ -11,27 +11,32 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="5">
         <ion-row>
-          <ion-col size="12">
+          <ion-col size="12" *ngIf="currentUser?.role !== 'SUPER_ADMIN'">
             <ion-button
               size="large"
               expand="block"
+              [disabled]="currentUser?.team === null"
               [routerLink]="['/leave-creation']"
             >
               Ajouter une absence
             </ion-button>
           </ion-col>
 
-          <ion-col size="12">
+          <ion-col size="12" *ngIf="currentUser?.role !== 'SUPER_ADMIN'">
             <ion-button
               size="large"
               expand="block"
+              [disabled]="currentUser?.team === null"
               [routerLink]="['/my-leaves']"
             >
               Voir mes absences
             </ion-button>
           </ion-col>
 
-          <ion-col size="12" *ngIf="currentUser?.role !== 'USER'">
+          <ion-col
+            size="12"
+            *ngIf="currentUser?.role !== 'USER' && currentUser?.role !== 'SUPER_ADMIN'"
+          >
             <ion-button
               size="large"
               expand="block"
@@ -48,7 +53,7 @@
               size="large"
               expand="block"
               color="tertiary"
-              [disabled]="currentUser?.team === null"
+              [routerLink]="['/all-leaves']"
             >
               Voir toutes les absences
             </ion-button>
@@ -57,7 +62,7 @@
           <ion-col
             size="12"
             class="ion-text-center"
-            *ngIf="currentUser?.team === null"
+            *ngIf="currentUser?.team === null && currentUser?.role !== 'SUPER_ADMIN'"
           >
             <ion-note color="warning">
               Pensez a renseigner votre équipe sur votre profil

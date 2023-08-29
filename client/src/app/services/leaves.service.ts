@@ -11,6 +11,12 @@ import { User } from './models/user.model';
 export class LeavesService {
   constructor(private httpClient: HttpClient) {}
 
+  allLeaves(): Observable<{ users: User[]; leaves: Leave[] }> {
+    return this.httpClient.get<{ users: User[]; leaves: Leave[] }>(
+      `${environment.apiURL}all-leaves`,
+    );
+  }
+
   createLeave(payload: {
     email: string;
     startDate: string;
