@@ -71,6 +71,20 @@ export class AllLeavesPage implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  async export(): Promise<void> {
+    if (await this.toastController.getTop()) {
+      await this.toastController.dismiss();
+    }
+
+    const toast = await this.toastController.create({
+      message: `not for now`,
+      duration: 3000,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
+
   leaveDateFormatted(leave: Leave): { start: string; end: string | null } {
     let start = '';
     let end = null;
