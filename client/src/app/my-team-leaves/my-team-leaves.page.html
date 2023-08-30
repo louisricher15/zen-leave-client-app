@@ -10,6 +10,21 @@
       </ion-col>
     </ion-row>
 
+    <ion-row
+      class="ion-justify-content-center"
+      *ngIf="myTeamLeaves?.length !== 0"
+    >
+      <ion-col size="12" size-md="5">
+        <ion-row>
+          <ion-col size="12" size-md="auto">
+            <ion-button expand="block" (click)="export()">
+              Exporter
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="5">
         <ion-note
