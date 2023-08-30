@@ -14,9 +14,11 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./my-team-leaves.page.scss'],
 })
 export class MyTeamLeavesPage implements OnInit, OnDestroy {
+  currentTab: 'list' | 'calendar' = 'list';
   currentUser: User | null = null;
   myTeamLeaves: Leave[] = [];
   myTeamUsers: User[] = [];
+  selectedDates: string[] = [];
 
   private readonly ngUnsubscribe = new Subject();
 
@@ -162,6 +164,32 @@ export class MyTeamLeavesPage implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  get myTeamLeavesOnSelectedDates(): Leave[] {
+    return this.myTeamLeaves.filter((leave) => {
+      return this.selectedDates?.length === 0
+        ? false
+        : this.selectedDates
+            ?.map((date) => {
+              return new Date(new Date(date).setHours(4)).setMinutes(20);
+            })
+            ?.some(
+              (date) =>
+                new Date(leave?.startDate).valueOf() ===
+                  new Date(date).valueOf() ||
+                new Date(leave?.endDate).valueOf() ===
+                  new Date(date).valueOf() ||
+                (new Date(leave?.startDate).valueOf() <=
+                  new Date(date).valueOf() &&
+                  new Date(leave?.endDate).valueOf() >=
+                    new Date(date).valueOf()),
+            );
+    });
+  }
+
+  selectDate(event: any): void {
+    this.selectedDates = event?.detail?.value;
   }
 
   validationStatusChipColor(leave: Leave): string {

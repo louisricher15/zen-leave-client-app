@@ -27,53 +27,150 @@
 
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="5">
-        <ion-note
-          class="ion-margin-horizontal"
-          *ngIf="myTeamLeaves?.length === 0"
-        >
-          Pas d'absences
-        </ion-note>
-
-        <ion-card color="light" *ngFor="let leave of myTeamLeaves">
-          <ion-card-content class="ion-padding">
-            <ion-grid class="ion-no-margin ion-no-padding">
-              <ion-row>
-                <ion-col size="auto">
-                  <ion-chip [color]="validationStatusChipColor(leave)">
-                    <ion-icon [name]="validationStatusIcon(leave)"></ion-icon>
-                    <ion-label
-                      [innerText]="validationStatusLabel(leave)"
-                    ></ion-label>
-                  </ion-chip>
-                </ion-col>
-              </ion-row>
-
-              <ion-row class="ion-margin-vertical">
-                <ion-col size="12" [innerHTML]="userNameByID(leave?.userID)">
-                </ion-col>
-              </ion-row>
-
-              <ion-row>
-                <ion-col
-                  size="12"
-                  [innerHTML]="leaveDateFormatted(leave).start"
-                >
-                </ion-col>
-              </ion-row>
-
-              <ion-row
-                *ngIf="leaveDateFormatted(leave).end !== null"
-                class="ion-margin-top"
+        <ion-row>
+          <ion-col size="12" size-md="auto">
+            <ion-segment [value]="currentTab" (ionChange)="selectedDates = []">
+              <ion-segment-button value="list" (click)="currentTab = 'list'">
+                <ion-label
+                  ><ion-icon name="list-outline" size="default"></ion-icon
+                ></ion-label>
+              </ion-segment-button>
+              <ion-segment-button
+                value="calendar"
+                (click)="currentTab = 'calendar'"
               >
-                <ion-col
-                  size="12"
-                  [innerHTML]="leaveDateFormatted(leave).end"
-                ></ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
+                <ion-label
+                  ><ion-icon name="calendar-outline" size="default"></ion-icon
+                ></ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
+
+    <ng-container *ngIf="currentTab === 'calendar'">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="5">
+          <ion-card color="light">
+            <ion-card-content>
+              <ion-datetime
+                presentation="date"
+                first-day-of-week="1"
+                [multiple]="true"
+                (ionChange)="selectDate($event)"
+              ></ion-datetime>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="5">
+          <ion-note
+            class="ion-margin-horizontal"
+            *ngIf="myTeamLeavesOnSelectedDates?.length === 0"
+          >
+            Pas d'absences
+          </ion-note>
+
+          <ion-card
+            color="light"
+            *ngFor="let leave of myTeamLeavesOnSelectedDates"
+          >
+            <ion-card-content class="ion-padding">
+              <ion-grid class="ion-no-margin ion-no-padding">
+                <ion-row>
+                  <ion-col size="auto">
+                    <ion-chip [color]="validationStatusChipColor(leave)">
+                      <ion-icon [name]="validationStatusIcon(leave)"></ion-icon>
+                      <ion-label
+                        [innerText]="validationStatusLabel(leave)"
+                      ></ion-label>
+                    </ion-chip>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row class="ion-margin-vertical">
+                  <ion-col size="12" [innerHTML]="userNameByID(leave?.userID)">
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col
+                    size="12"
+                    [innerHTML]="leaveDateFormatted(leave).start"
+                  >
+                  </ion-col>
+                </ion-row>
+
+                <ion-row
+                  *ngIf="leaveDateFormatted(leave).end !== null"
+                  class="ion-margin-top"
+                >
+                  <ion-col
+                    size="12"
+                    [innerHTML]="leaveDateFormatted(leave).end"
+                  ></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngIf="currentTab === 'list'">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="5">
+          <ion-note
+            class="ion-margin-horizontal"
+            *ngIf="myTeamLeaves?.length === 0"
+          >
+            Pas d'absences
+          </ion-note>
+
+          <ion-card color="light" *ngFor="let leave of myTeamLeaves">
+            <ion-card-content class="ion-padding">
+              <ion-grid class="ion-no-margin ion-no-padding">
+                <ion-row>
+                  <ion-col size="auto">
+                    <ion-chip [color]="validationStatusChipColor(leave)">
+                      <ion-icon [name]="validationStatusIcon(leave)"></ion-icon>
+                      <ion-label
+                        [innerText]="validationStatusLabel(leave)"
+                      ></ion-label>
+                    </ion-chip>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row class="ion-margin-vertical">
+                  <ion-col size="12" [innerHTML]="userNameByID(leave?.userID)">
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col
+                    size="12"
+                    [innerHTML]="leaveDateFormatted(leave).start"
+                  >
+                  </ion-col>
+                </ion-row>
+
+                <ion-row
+                  *ngIf="leaveDateFormatted(leave).end !== null"
+                  class="ion-margin-top"
+                >
+                  <ion-col
+                    size="12"
+                    [innerHTML]="leaveDateFormatted(leave).end"
+                  ></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
   </ion-grid>
 </ion-content>
